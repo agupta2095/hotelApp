@@ -3,7 +3,10 @@ package server;
 import hotelapp.AppInterface;
 import hotelapp.CommandLineParser;
 import org.apache.velocity.app.VelocityEngine;
+import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.server.handler.HandlerList;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 import org.eclipse.jetty.servlet.ServletContextHandler;
 
 
@@ -29,6 +32,7 @@ public class HotelServer {
         handler.setAttribute("templateEngine", velocity);
         handler.setAttribute("interface", appInterface);
 
+
         handler.addServlet(RegistrationServlet.class, "/register");
         handler.addServlet(LoginServlet.class, "/login");
         handler.addServlet(SearchHotelServlet.class, "/search");
@@ -40,7 +44,16 @@ public class HotelServer {
         handler.addServlet(DeleteReviewServlet.class, "/deleteReview");
         handler.addServlet(ExpediaLinksServlet.class, "/expediaLinks");
         handler.addServlet(ReviewsServlet.class, "/reviews");
-        server.setHandler(handler);
+
+        ResourceHandler resource_handler = new ResourceHandler(); // a handler for serving static pages
+        resource_handler.setDirectoriesListed(true);
+
+        resource_handler.setResourceBase("static");
+
+        HandlerList handlers = new HandlerList();
+        handlers.setHandlers(new Handler[] { resource_handler, handler });
+        server.setHandler(handlers);
+
         try {
             server.start();
             server.join();

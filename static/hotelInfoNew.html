@@ -9,29 +9,29 @@
           "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
         crossorigin="" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="js/reviews.js"></script>
   <style>
-    .btn-border{
+  .btn-border{
       border: 2px solid black;
       border-color: white;
       color:white
     }
     .favourite {
-background: #fff;
-  border: unset;
-  outline: 0;
-  font-size: 20px;
-  cursor: pointer;
-  color: #65676b;
-  padding: 5px 10px;
-  border-radius:7px;
-}
+      background: #fff;
+      border: unset;
+      outline: 0;
+      font-size: 18px;
+      cursor: pointer;
+      color: #65676b;
+      padding: 5px 10px;
+      border-radius:7px;
+    }
   </style>
 </head>
-    <title>Search Hotels</title>
+<title>Search Hotels</title>
 <body onload="uploadReviews(${hotelId});">
 
 <nav class="navbar navbar-expand-lg navbar-light bg-primary">
@@ -53,8 +53,8 @@ background: #fff;
       <li class="nav-item">
         <a class="nav-link" href="/modifyReviews?hotelId=${hotelId}" style="color:white">Modify Review</a>
       </li>
+      #end
     </ul>
-    #end
     <form class="form-inline my-2 my-lg-0">
       <h6 class="my-2 my-sm-0" style="color:white">Last Login: ${lastLogin}</h6>&nbsp;&nbsp;&nbsp;&nbsp;
       <button class="btn my-2 my-sm-0 btn-border" type="submit">Logout</button>
@@ -72,9 +72,8 @@ background: #fff;
     <h6 class="my-2 my-sm-0" style="color:black">Go To Expedia Page</h6>
   </a>
     </div>
-    <div class="col-sm-6" style="margin-top:50px">
-      <div id="map" style="width: 660px; height: 300px"></div>
-      <!-- Get the leaflet JavaScript file -->
+    <div class="col-sm-6" style="margin-top:20px margin-left:30px">
+      <div id="map" style="width: 560px; height: 200px"></div>
       <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
               integrity= "sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
               crossorigin="">
@@ -88,16 +87,28 @@ background: #fff;
     map.locate({setView: true, maxZoom: 16});
     let eiffelMarker = L.marker([${latitude}, ${longitude}]).addTo(map);
 </script>
-      <form method="post" action="/favouriteHotels">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        <button class ="favourite" id="like" onclick="liked()">
-          <i class="fa fa-heart" style="color:red"></i>
-          <span class="icon">Add To Favourite</span>
-        </button>
-      </form>
     </div>
+
     </div>
 </div>
+<div class="container-fluid" style="margin-top:10px">
+  <div class="row content justify-content-left">
+    <form method="post" action="/favouriteHotels">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+      <button class ="favourite" id="like" onclick="liked()">
+        <i class="fa fa-heart" style="color:red"></i>
+        <span class="icon">Add To Favourite</span>
+      </button>
+    </form>
+  </div>
 
 </div>
+<div class="container-fluid" style="margin-top:30px">
+  <div class="row content justify-content-center">
+    <div id="showReviews"></div>
+    <a href="javascript:getPreviousPage()" id="previousPage">Previous Page</a>&nbsp;&nbsp;
+    <a href="javascript:getNextPage()" id="nextPage">Next Page</a><br> &nbsp;&nbsp;
+    <span id="paginationPage"></span>
+  </div>
+  </div>
 </body>
 </html>

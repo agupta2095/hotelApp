@@ -69,7 +69,7 @@ public class HotelInfoServlet extends HttpServlet {
         context.put("displayAdd", isAdd);
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 
-        Template template = ve.getTemplate("static/hotelInfo.html");
+        Template template = ve.getTemplate("static/hotelInfoNew.html");
 
         StringWriter writer = new StringWriter();
         template.merge(context, writer);
