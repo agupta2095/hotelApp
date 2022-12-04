@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>MyTravelAdvisor</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</head>
+<body>
+<style>
+.topNav {
+  float: center;
+  padding: 14px 30px;
+}
+</style>
+
+<div class="jumbotron text-center">
+  <h4>Register to your Hotel Search App!</h4>
+  <div class = "topNav">
+    <form method = "get" action ="/home">
+      <button>Home</button>
+    </form>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm-4">
+      <form method="post" action='/register'>
+      <p>Enter your username<br><input type="text" name="username"><br></p>
+        #if($error == "USER_EXISTS") Username already taken! #end
+      <p>Enter your password:<br><input type="password" name="pass" pattern="(?=.*\d)(?=.*[a-zA-Z])(?=.*[@$!%*#?&]).{6,}"><br></p>
+        <p> Re-enter your password:<br><input type="password" name="repass"><br></p>
+        #if($error == "PASSWORD_MISMATCH") Passwords do not match!
+        #elseif($error == "PASSWORD_INSUFFICIENT") Password should contain at least one digit, alphabet and special character!
+        #end
+      <p><input type="submit" value="Enter"></p>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>

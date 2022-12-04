@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>My Travel Advisor</title>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity=
+          "sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
+        crossorigin="" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body onload="uploadReviews(${hotelId});" >
+<style>
+.topNav {
+  float: right;
+  padding: 14px 30px;
+}
+.favourite {
+background: #fff;
+  border: unset;
+  outline: 0;
+  font-size: 14px;
+  cursor: pointer;
+  color: #65676b;
+  padding: 5px 10px;
+  border-radius:5px;
+}
+</style>
+
+<div class = "topNav">
+  <form method = "get" action ="/logout">
+    <button>Logout</button>
+  </form>
+</div>
+<div class="jumbotron text-left">
+  <h3 style="background-color:grey; color:white">
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  $hotelName: $hotelId<br><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  $hotelAddress<br><br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;  Average Rating: $avgRating</h3>
+  <a onclick="updateExpedia(${expediaLink});" href  ="${expediaLink}">
+    <h3 style="background-color:Tomato; color:white">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Expedia Link</h3>
+  </a>
+
+  <form method="post" action="/favouriteHotels">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <button class ="favourite" id="like" onclick="liked()">
+      <i class="fa fa-heart" style="color:red"></i>
+      <span class="icon">Add To Favourite</span>
+    </button>
+  </form>
+#if($displayAdd)
+<div class ="section text-center">
+  <form method ="get" action="/addReview">
+    <input type="hidden" value="${hotelId}" name="hotelId">
+    <input type="hidden" value="${userName}" name="userName">
+    <p><input type="submit" value="Add Review" size="30"></p>
+  </form>
+  <form method = "get" action = "/search">
+    <input type="hidden" value="${userName}" name="userName">
+    <button type = "submit" class ="green margin-right"> Go Back to Search</button>
+  </form>
+</div>
+#else
+<div class ="section text-center">
+  <form method ="get" action="/modifyReview">
+    <input type="hidden" value="${hotelId}" name="hotelId">
+    <input type="hidden" value="${userName}" name="userName">
+    <input type="submit" value="Modify Review" size="30"><br>
+  </form>
+  <form method = "get" action = "/search">
+    <input type="hidden" value="${userName}" name="userName">
+    <button type = "submit" > Go Back to Search</button>
+  </form>
+</div>
+  #end
+</div>
+<div id="map" style="width: 660px; height: 300px"></div>
+<!-- Get the leaflet JavaScript file -->
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
+        integrity= "sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
+        crossorigin="">
+</script>
+<script>
+    const map = L.map('map')
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19,
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    map.setView([${latitude}, ${longitude}], 16);
+    map.locate({setView: true, maxZoom: 16});
+    let eiffelMarker = L.marker([${latitude}, ${longitude}]).addTo(map);
+</script>
+<br>
+<br>
+<div class="section">
+  <div class="pageitem">
+    <div id="showReviews"></div>
+    <a href="javascript:getPreviousPage()" id="previousPage">Previous Page</a>
+    <a href="javascript:getNextPage()" id="nextPage">Next Page</a>
+    Page Number: <span id="paginationPage"></span>
+  </div>
+</div>
+<script>
+    var reviews;
+    async function uploadReviews(hotelId) {
+      console.log("Here in Upload reviews");
+      let response = await fetch('/reviews?hotelId='+hotelId, {method :'get'});
+      let json = await response.json();
+      console.log(json);
+      const result = JSON.stringify(json);
+      reviews = JSON.parse(result);
+      console.log(reviews.length);
+      displayPage(1);
+    }
+    var currentPage = 1;
+    var CountPerEachPage = 5;
+    function numberOfPages() {
+       return Math.ceil(reviews.length / CountPerEachPage);
+    }
+
+    function getPreviousPage() {
+      if(currentPage > 1) {
+        currentPage--;
+        displayPage(currentPage);
+      }
+    }
+
+    function getNextPage() {
+      if(currentPage <numberOfPages()) {
+        currentPage++;
+        displayPage(currentPage);
+      }
+    }
+
+    function displayPage(paginationPage) {
+      var nextPage = document.getElementById("nextPage");
+      var previousPage = document.getElementById("previousPage");
+      var showMyReviews = document.getElementById("showReviews");
+      var pageNumber = document.getElementById("paginationPage");
+      //validating pages based on page count
+      if (pageNumber < 1)
+      paginationPage = 1;
+      if (paginationPage > numberOfPages())
+      paginationPage = numberOfPages();
+
+      showMyReviews.innerHTML = "";
+      for (var i = (paginationPage - 1) * CountPerEachPage; i < (paginationPage * CountPerEachPage); i++) {
+        showMyReviews.innerHTML += "Review by " + reviews[i]["username"] + " on " + reviews[i]["date"] + "<br>";
+        showMyReviews.innerHTML += "Title: " + reviews[i]["title"] + "<br>";
+        showMyReviews.innerHTML +="Rating: " + reviews[i]["rating"] +"<br>";
+        showMyReviews.innerHTML += reviews[i]["text"];
+        showMyReviews.innerHTML += "<hr style=\"height:2px;border-width:0;color:gray;background-color:gray\">";
+      }
+      pageNumber.innerHTML = paginationPage;
+      if (paginationPage == 1) {
+         previousPage.style.visibility = "hidden";
+      } else {
+         previousPage.style.visibility = "visible";
+      }
+      if (paginationPage == numberOfPages()) {
+        nextPage.style.visibility = "hidden";
+      } else {
+        nextPage.style.visibility = "visible";
+      }
+    }
+</script>
+</body>
+</html>
