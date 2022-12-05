@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
+  <script src="js/favHotels.js"></script>
   <style>
     .btn-border{
       border: 2px solid black;
@@ -49,7 +49,7 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item">
-        <a class="nav-link" href="/favouriteHotels" style="color:white">Favourite Hotels</a>
+        <a class="nav-link" href="favHotels.html" onclick="getLiked();" style="color:white">Favourite Hotels</a>
       </li>
     </ul>
     <form class="form-inline my-2 my-lg-0" method="get" action="/logout">

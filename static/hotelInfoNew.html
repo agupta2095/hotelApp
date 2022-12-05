@@ -45,6 +45,7 @@
   <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
       <li class="nav-item">
+        <input type="hidden" value="${userName}" name="userName">
         <a class="nav-link" href="/search" style="color:white">Back To Search</a>
       </li>
       #if($displayAdd)
@@ -95,7 +96,7 @@
 </div>
 <div class="container-fluid" style="margin-top:10px">
   <div class="row content justify-content-left">
-      <button class ="favourite" id="like" onclick="liked(${hotelId})">
+      <button class ="favourite" id="like" onclick="liked('${hotelId}', '${hotelName}')">
         <i class="fa fa-heart" style="color:red"></i>
         <span class="icon">Add To Favourite</span>
       </button>

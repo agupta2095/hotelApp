@@ -405,12 +405,13 @@ public class DatabaseHandler {
         }
         return null;
     }
-    public void addFavouriteHotel(String username, String hotelId) {
+    public void addFavouriteHotel(String username, String hotelId, String hotelName) {
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             statement = connection.prepareStatement(PreparedStatements.ADD_FAVOURITE_HOTEL_SQL);
             statement.setString(1, username);
             statement.setString(2, hotelId);
+            statement.setString(3,hotelName);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -430,16 +431,17 @@ public class DatabaseHandler {
         }
     }
 
-    public List<String> getFavouriteHotels(String username) {
-        List<String> hotels = new ArrayList<>();
+    public Map<String, String> getFavouriteHotels(String username) {
+        Map<String, String> hotels = new HashMap<>();
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             statement = connection.prepareStatement(PreparedStatements.GET_FAVOURITE_HOTELS_SQL);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
-                String hotelId = resultSet.getString("link");
-                hotels.add(hotelId);
+                String hotelId = resultSet.getString("hotelId");
+                String hotelName = resultSet.getString("hotelName");
+                hotels.put(hotelId, hotelName);
             }
             statement.close();
         } catch (SQLException e) {
@@ -514,9 +516,8 @@ public class DatabaseHandler {
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
         //dbHandler.createTable();
         //dbHandler.createReviewTable();
-        dbHandler.createExpediaLinksTable();
+        //dbHandler.createExpediaLinksTable();
         //dbHandler.createFavouriteHotelsTable();
-
     }
 }
 
