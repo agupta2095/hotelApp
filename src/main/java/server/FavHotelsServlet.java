@@ -27,12 +27,17 @@ public class FavHotelsServlet extends HttpServlet {
         HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         String username = (String) session.getAttribute("username");
-        System.out.println("Here in Favourite Hotels " + username);
-        VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
-        VelocityContext context = new VelocityContext();
+
+        String clear = request.getParameter("clear");
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+        if(clear != null) {
+            databaseHandler.clearFavHotels(username);
+            return;
+        }
+        //System.out.println("Here in Favourite Hotels " + username);
+
         Map<String, String> hotels = databaseHandler.getFavouriteHotels(username);
-        System.out.println(hotels);
+        //System.out.println(hotels);
         JSONArray array = new JSONArray();
         if(hotels != null) {
             int index = 0;

@@ -114,11 +114,13 @@
         <span class="sr-only">Next</span>
       </a>
     </div>
+    #if ($expediaLinks.size() > 0)
     <form method="post" action='/expediaLinks'>
       <div class="form-group" style="margin-top:20px; margin-left:4px">
         <button type="submit" class="btn btn-primary rounded submit px-3">Clear Visited History</button>
       </div>
     </form>
+    #end
   </div>
 </div>
 </div>

@@ -24,11 +24,11 @@ public class ModifyReviewServlet extends HttpServlet {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = response.getWriter();
-
+        System.out.println("Here in Modify Review GET METHOD");
         String hotelId = request.getParameter("hotelId");
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-        String userName = request.getParameter("userName");
-        userName = StringEscapeUtils.escapeHtml4(userName);
+        HttpSession httpSession = request.getSession();
+        String userName = (String) httpSession.getAttribute("username");
 
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
@@ -45,7 +45,7 @@ public class ModifyReviewServlet extends HttpServlet {
         context.put("userTitle", title);
         context.put("userRating", rating);
         context.put("userText", text);
-        Template template = ve.getTemplate("static/modifyReview.html");
+        Template template = ve.getTemplate("static/modifyReviewNew.html");
 
         StringWriter writer = new StringWriter();
         template.merge(context, writer);

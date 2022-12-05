@@ -41,7 +41,7 @@ public class ReviewsServlet extends HttpServlet {
                 index++;
             }
         }
-        System.out.println(array.length());
+
         out.println(array);
     }
 }

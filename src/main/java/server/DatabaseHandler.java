@@ -384,6 +384,8 @@ public class DatabaseHandler {
      */
     Review getReviewForAUser(String hotelId, String userName) {
         PreparedStatement statement;
+        System.out.println("Here in Get Review For A User");
+
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             statement = connection.prepareStatement(PreparedStatements.GET_USER_REVIEW_SQL);
             statement.setString(1, hotelId);
@@ -450,6 +452,18 @@ public class DatabaseHandler {
         return hotels;
     }
 
+    public void clearFavHotels(String username) {
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            statement = connection.prepareStatement(PreparedStatements.CLEAR_FAVOURITE_HOTELS_SQL);
+            statement.setString(1, username);
+            statement.executeUpdate();
+            statement.close();
+            System.out.println("Successfully cleared Favourite Hotels");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
     public void addExpediaLink(String username, String link, String hotelName) {
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {

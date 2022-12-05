@@ -42,5 +42,7 @@ function displayFav() {
   }
 }
 async function clearFav() {
-
+   console.log("Here in Clear Favourite Hotels");
+   let response = await fetch('/favHotels?clear=true', {method :'get'});
+   getLiked();
 }
