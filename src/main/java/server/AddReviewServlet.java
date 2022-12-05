@@ -30,7 +30,7 @@ public class AddReviewServlet extends HttpServlet {
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
         context.put("hotelId", hotelId);
-        Template template = ve.getTemplate("templates/addReview.html");
+        Template template = ve.getTemplate("static/addReviewNew.html");
 
         StringWriter writer = new StringWriter();
         template.merge(context, writer);
@@ -44,6 +44,7 @@ public class AddReviewServlet extends HttpServlet {
         if(userName != null) {
             String rating = request.getParameter("rating");
             rating = StringEscapeUtils.escapeHtml4(rating);
+            System.out.println(rating);
             String title = request.getParameter("title");
             title = StringEscapeUtils.escapeHtml4(title);
             String reviewText = request.getParameter("text");

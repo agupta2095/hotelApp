@@ -1,7 +1,6 @@
 package server;
 
 import org.apache.commons.text.StringEscapeUtils;
-import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 
@@ -11,11 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.StringWriter;
-import java.util.Map;
+import java.util.List;
 
-public class ExpediaLinksServlet extends HttpServlet {
+public class FavHotelsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException
@@ -23,26 +20,25 @@ public class ExpediaLinksServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = (String) session.getAttribute("username");
 
-        String link = request.getParameter("link");
-        link = StringEscapeUtils.escapeHtml4(link);
-
-        String hotelName = request.getParameter("hotelName");
-        hotelName = StringEscapeUtils.escapeHtml4(hotelName);
-
+        String hotelId = request.getParameter("hotelId");
+        hotelId = StringEscapeUtils.escapeHtml4(hotelId);
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-        databaseHandler.addExpediaLink(username, link, hotelName);
+        databaseHandler.addFavouriteHotel(username,hotelId);
         response.setStatus(HttpServletResponse.SC_OK);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String userName = (String)session.getAttribute("username");
-        PrintWriter out = response.getWriter();
         if(userName != null) {
             DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-            databaseHandler.clearExpediaLinks(userName);
+            List<String> expediaLinks = databaseHandler.getFavouriteHotels(userName);
+            VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
+            VelocityContext context = new VelocityContext();
+            context.put("links", expediaLinks);
+
         }
-        response.sendRedirect("/search?username="+userName);
     }
 }

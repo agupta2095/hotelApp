@@ -11,10 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Map;
 
 /** Servlet to search for hotels in the given application using a keyword entered
  * by the user
@@ -28,7 +30,12 @@ public class SearchHotelServlet extends HttpServlet {
         PrintWriter out = response.getWriter();
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
-        Template template = ve.getTemplate("static/searchHotels.html");
+        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+        HttpSession httpSession = request.getSession();
+        String userName = (String)httpSession.getAttribute("username");
+        Map<String, String> expediaLinks = databaseHandler.getExpediaLinks(userName);
+        context.put("expediaLinks", expediaLinks);
+        Template template = ve.getTemplate("static/searchHotelsNew.html");
 
         StringWriter writer = new StringWriter();
         template.merge(context, writer);
@@ -44,15 +51,20 @@ public class SearchHotelServlet extends HttpServlet {
 
         String keyword = request.getParameter("keyword");
         keyword = StringEscapeUtils.escapeHtml4(keyword);
+        System.out.println(keyword);
         AppInterface appInterface = (AppInterface) request.getServletContext().getAttribute("interface");
         List<HotelInformation> searchedHotels = appInterface.getHotelsWithKeyWordInName(keyword);
 
         VelocityContext context = new VelocityContext();
         context.put("hotels", searchedHotels);
-
+        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+        HttpSession httpSession = request.getSession();
+        String userName = (String)httpSession.getAttribute("username");
+        Map<String, String> expediaLinks = databaseHandler.getExpediaLinks(userName);
+        context.put("expediaLinks", expediaLinks);
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 
-        Template template = ve.getTemplate("static/searchHotels.html");
+        Template template = ve.getTemplate("static/searchHotelsNew.html");
 
         StringWriter writer = new StringWriter();
         template.merge(context, writer);

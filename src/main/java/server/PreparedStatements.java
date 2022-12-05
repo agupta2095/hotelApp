@@ -77,15 +77,18 @@ public class PreparedStatements {
 
     public static final String CREATE_EXPEDIA_SQL=
             "CREATE TABLE expediaLinks (" +
-            "username VARCHAR(32) UNIQUE NOT NULL, " +
-            "expediaLink VARCHAR(255) NOT NULL);";
+            "username VARCHAR(32) NOT NULL, " +
+            "expediaLink VARCHAR(255) NOT NULL UNIQUE, " +
+                    "hotelName VARCHAR(64) NOT NULL);";
 
     public static final String ADD_EXPEDIA_LINK_SQL=
-            "INSERT INTO expediaLinks (username, expediaLink) VALUES(?, ?);";
+            "INSERT INTO expediaLinks (username, expediaLink, hotelName) VALUES(?, ?, ?);";
 
     public static final String GET_EXPEDIA_LINKS_SQL =
-            "SELECT expediaLink from expediaLinks GROUP BY username WHERE username = ?";
+            "SELECT * from expediaLinks WHERE username = ?;";
 
+    public static final String CLEAR_EXPEDIA_LINKS_SQL=
+            "DELETE FROM expediaLinks WHERE username = ?;";
     public static final String CREATE_FAVOURITE_HOTELS_SQL=
             "CREATE TABLE favHotels (" +
                     "username VARCHAR(32) UNIQUE NOT NULL, " +
@@ -97,7 +100,8 @@ public class PreparedStatements {
     public static final String CLEAR_FAVOURITE_HOTELS_SQL =
             "DELETE FROM favHotels WHERE username = ?";
 
+
     public static final String GET_FAVOURITE_HOTELS_SQL =
-            "SELECT hotelId from favHotels GROUP BY username WHERE username = ?";
+            "SELECT hotelId from favHotels WHERE username = ?";
 
 }

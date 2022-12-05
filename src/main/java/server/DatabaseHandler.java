@@ -448,14 +448,16 @@ public class DatabaseHandler {
         return hotels;
     }
 
-    public void addExpediaLink(String username, String link) {
+    public void addExpediaLink(String username, String link, String hotelName) {
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             statement = connection.prepareStatement(PreparedStatements.ADD_EXPEDIA_LINK_SQL);
             statement.setString(1, username);
             statement.setString(2, link);
+            statement.setString(3, hotelName);
             statement.executeUpdate();
             statement.close();
+            System.out.println("Successfully added Expedia Link");
         } catch (SQLException e) {
             System.out.println(e);
         }
@@ -473,16 +475,17 @@ public class DatabaseHandler {
         }
     }
 
-    public List<String> getExpediaLinks(String username) {
-        List<String> links = new ArrayList<>();
+    public Map<String, String> getExpediaLinks(String username) {
+        Map<String, String> links = new HashMap<>();
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             statement = connection.prepareStatement(PreparedStatements.GET_EXPEDIA_LINKS_SQL);
             statement.setString(1, username);
             ResultSet resultSet = statement.executeQuery();
             while(resultSet.next()) {
-                String link = resultSet.getString("link");
-                links.add(link);
+                String link = resultSet.getString("expediaLink");
+                String hotelName = resultSet.getString("hotelName");
+                links.put(link, hotelName);
             }
             statement.close();
         } catch (SQLException e) {
@@ -490,16 +493,29 @@ public class DatabaseHandler {
         }
         return links;
     }
+
+    public void clearExpediaLinks(String username) {
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            statement = connection.prepareStatement(PreparedStatements.CLEAR_EXPEDIA_LINKS_SQL);
+            statement.setString(1, username);
+            statement.executeUpdate();
+            statement.close();
+            System.out.println("Successfully cleared Expedia Link");
+        } catch (SQLException e) {
+            System.out.println(e);
+        }
+    }
     /**
      * Main function to create table in MYSQL database
      * @param args
      */
     public static void main(String[] args) {
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
-        dbHandler.createTable();
-        dbHandler.createReviewTable();
+        //dbHandler.createTable();
+        //dbHandler.createReviewTable();
         dbHandler.createExpediaLinksTable();
-        dbHandler.createFavouriteHotelsTable();
+        //dbHandler.createFavouriteHotelsTable();
 
     }
 }

@@ -27,16 +27,19 @@ public class ReviewsServlet extends HttpServlet {
         Set<Review> reviews = appInterface.getReviewsForAHotel(hotelId);
         JSONArray array = new JSONArray();
 
-        int index = 0;
-        for(Review review : reviews) {
-            JSONObject obj = new JSONObject();
-            obj.put("reviewId", review.getReviewId());
-            obj.put("title", review.getTitle());
-            obj.put("text", review.getReviewText());
-            obj.put("date", review.getTimeStamp());
-            obj.put("username", review.getUserName());
-            array.put(index, obj);
-            index++;
+        if(reviews != null) {
+            int index = 0;
+            for (Review review : reviews) {
+                JSONObject obj = new JSONObject();
+                obj.put("reviewId", review.getReviewId());
+                obj.put("title", review.getTitle());
+                obj.put("text", review.getReviewText());
+                obj.put("date", review.getTimeStamp());
+                obj.put("username", review.getUserName());
+                obj.put("rating", review.getRatingOverall());
+                array.put(index, obj);
+                index++;
+            }
         }
         System.out.println(array.length());
         out.println(array);
