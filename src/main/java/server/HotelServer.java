@@ -14,15 +14,15 @@ public class HotelServer {
     public static final int PORT = 8083;
 
     public static void main(String[] args) throws Exception {
-        CommandLineParser cp = new CommandLineParser();
+        /*CommandLineParser cp = new CommandLineParser();
         cp.parseCommandLineArguments(args);
 
         AppInterface appInterface = new AppInterface();
         if(!cp.processCmdLineArguments(appInterface)) {
             return;
         }
-        appInterface.fillAvgRating();
-
+        appInterface.fillAvgRating();*/
+        AppInterface appInterface = new AppInterface();
         Server server = new Server(PORT);
 
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);

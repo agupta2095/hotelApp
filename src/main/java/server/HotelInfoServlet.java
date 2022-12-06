@@ -34,17 +34,11 @@ public class HotelInfoServlet extends HttpServlet {
         String hotelId = request.getParameter("hotelId");
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
         AppInterface appInterface = (AppInterface) request.getServletContext().getAttribute("interface");
-        HotelInformation hotelInfoObj = appInterface.getHotel(hotelId);
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
-        Set<Review> reviews = appInterface.getReviewsForAHotel(hotelId);
+        HotelInformation hotelInfoObj = dbHandler.getHotel(hotelId);
 
-        Set<Review> newReviews = dbHandler.getReview(hotelId);
-        if(reviews != null) {
-            reviews.addAll(newReviews);
-        } else if(newReviews != null && !newReviews.isEmpty()) {
-            reviews = newReviews;
-        }
-        double avgRating = appInterface.getAverageRating(hotelId, newReviews);
+        //double avgRating = appInterface.getAverageRating(hotelId, newReviews);
+        double avgRating = 0.0;
 
         VelocityContext context = new VelocityContext();
         context.put("hotelName", hotelInfoObj.getHotelName());
@@ -57,9 +51,7 @@ public class HotelInfoServlet extends HttpServlet {
         String userName = (String)httpSession.getAttribute("username");
         context.put("userName", userName);
         context.put("avgRating", decimalFormat.format(avgRating));
-        if(reviews != null) {
-            context.put("reviews", reviews);
-        }
+
 
         Review review = dbHandler.getReviewForAUser(hotelId, userName);
         boolean isAdd = true;

@@ -48,16 +48,16 @@ public class CommandLineParser {
         int noOfThreadsInt = noOfThreads.isEmpty() ? 1 : Integer.parseInt(noOfThreads);
 
         UserFilesParser userFilesParser = new UserFilesParser(noOfThreadsInt, appInterface);
-        userFilesParser.parseHotelsFile(hotelFilePath);
+        //userFilesParser.parseHotelsFile(hotelFilePath);
         userFilesParser.findAndParseReviewFiles(reviewsDirPath);
-        appInterface.printInOutputFile(outputFilePath);
+        /*appInterface.printInOutputFile(outputFilePath);
 
         if(hotelFilePath.isEmpty() || reviewsDirPath.isEmpty()) {
             return false;
         }
         if(!outputFilePath.isEmpty()) {
             return false;
-        }
+        }*/
         return true;
     }
 }

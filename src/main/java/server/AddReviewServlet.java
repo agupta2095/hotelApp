@@ -52,7 +52,7 @@ public class AddReviewServlet extends HttpServlet {
             String hotelId = request.getParameter("hotelId");
             String timeStamp = java.time.LocalDateTime.now().toString();
             DatabaseHandler dbHandler = DatabaseHandler.getInstance();
-            dbHandler.addReview(title, reviewText, timeStamp, userName, hotelId, rating);
+            dbHandler.addReview(title, reviewText, timeStamp, userName, hotelId, rating, "");
             response.getWriter().println("Successfully added the review");
             response.sendRedirect("/hotelInfo?hotelId="+hotelId);
         }

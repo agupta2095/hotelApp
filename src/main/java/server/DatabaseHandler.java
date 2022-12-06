@@ -1,5 +1,6 @@
 package server;
 
+import hotelapp.HotelInformation;
 import hotelapp.Review;
 import org.apache.commons.text.CharacterPredicates;
 import org.apache.commons.text.RandomStringGenerator;
@@ -235,9 +236,11 @@ public class DatabaseHandler {
      * @param rating : User rating
      */
     public void addReview(String title, String reviewText, String timeStamp,
-                          String username, String hotelId, String rating) {
+                          String username, String hotelId, String rating, String reviewId) {
         PreparedStatement statement;
-        String reviewId = generateRandomString();
+        if(reviewId.isEmpty()) {
+            reviewId = generateRandomString();
+        }
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             System.out.println("dbConnection successful");
             try {
@@ -490,7 +493,89 @@ public class DatabaseHandler {
             System.out.println(ex);
         }
     }
+    public void createHotelsTable() {
+        Statement statement;
+        try (Connection dbConnection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("dbConnection successful");
+            statement = dbConnection.createStatement();
+            statement.executeUpdate(PreparedStatements.CREATE_HOTELS_TABLE);
+        }
+        catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
 
+    public void addHotel(String name, String id, String city,
+                          String state, String address, String longitude, String latitude) {
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            System.out.println("dbConnection successful");
+            try {
+                statement = connection.prepareStatement(PreparedStatements.ADD_HOTEL_SQL);
+                statement.setString(1, id);
+                statement.setString(2, name);
+                statement.setString(3, city);
+                statement.setString(4, state);
+                statement.setString(5, address);
+                statement.setString(6, longitude);
+                statement.setString(7, latitude);
+                statement.executeUpdate();
+                statement.close();
+            }
+            catch(SQLException e) {
+                System.out.println(e);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+    }
+
+    List<HotelInformation> getHotelsWithKeyWordInName(String keyword) {
+        List<HotelInformation> hotels = new ArrayList<>();
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            statement = connection.prepareStatement(PreparedStatements.GET_ALL_HOTELS_SQL);
+            ResultSet results = statement.executeQuery();
+            while(results.next()) {
+                String hotelName = results.getString("hotelName");
+                if(hotelName.contains(keyword) || keyword.isEmpty()) {
+                    String hotelId = results.getString("hotelId");
+                    String city = results.getString("city");
+                    String state = results.getString("state");
+                    String address = results.getString("address");
+                    String longitude = results.getString("longitude");
+                    String latitude = results.getString("latitude");
+                    HotelInformation hotelObj = new HotelInformation(hotelId, hotelName, city, state, address, longitude, latitude);
+                    hotels.add(hotelObj);
+                }
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return hotels;
+    }
+
+    HotelInformation getHotel(String hotelId) {
+        HotelInformation hotelObj = null;
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            statement = connection.prepareStatement(PreparedStatements.GET_HOTEL_SQL);
+            statement.setString(1, hotelId);
+            ResultSet results = statement.executeQuery();
+            while(results.next()) {
+                String hotelName = results.getString("hotelName");
+                String city = results.getString("city");
+                String state = results.getString("state");
+                String address = results.getString("address");
+                String longitude = results.getString("longitude");
+                String latitude = results.getString("latitude");
+                hotelObj = new HotelInformation(hotelId, hotelName, city, state, address, latitude, longitude);
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        }
+        return hotelObj;
+    }
     public Map<String, String> getExpediaLinks(String username) {
         Map<String, String> links = new HashMap<>();
         PreparedStatement statement;
@@ -529,9 +614,10 @@ public class DatabaseHandler {
     public static void main(String[] args) {
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
         //dbHandler.createTable();
-        //dbHandler.createReviewTable();
+        dbHandler.createReviewTable();
         //dbHandler.createExpediaLinksTable();
         //dbHandler.createFavouriteHotelsTable();
+        //dbHandler.createHotelsTable();
     }
 }
 

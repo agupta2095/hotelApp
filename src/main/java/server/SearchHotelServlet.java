@@ -52,12 +52,13 @@ public class SearchHotelServlet extends HttpServlet {
         String keyword = request.getParameter("keyword");
         keyword = StringEscapeUtils.escapeHtml4(keyword);
         System.out.println(keyword);
-        AppInterface appInterface = (AppInterface) request.getServletContext().getAttribute("interface");
-        List<HotelInformation> searchedHotels = appInterface.getHotelsWithKeyWordInName(keyword);
+        //AppInterface appInterface = (AppInterface) request.getServletContext().getAttribute("interface");
+        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+        List<HotelInformation> searchedHotels = databaseHandler.getHotelsWithKeyWordInName(keyword);
 
         VelocityContext context = new VelocityContext();
         context.put("hotels", searchedHotels);
-        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+
         HttpSession httpSession = request.getSession();
         String userName = (String)httpSession.getAttribute("username");
         Map<String, String> expediaLinks = databaseHandler.getExpediaLinks(userName);

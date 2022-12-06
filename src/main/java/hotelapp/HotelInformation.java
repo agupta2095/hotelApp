@@ -2,29 +2,34 @@ package hotelapp;
 
 import com.google.gson.annotations.SerializedName;
 
-/** Class to store information about HOTEL about reading from json files**/
+/** Class to store information about HOTEL **/
 public class HotelInformation {
     private String id;
-    @SerializedName(value = "f")
     private String name;
-    @SerializedName(value = "ad")
     private String address;
-    @SerializedName(value = "ci")
     private String city;
-    @SerializedName(value = "pr")
     private String state;
+    private String latitude;
+    private  String longitude;
 
-    @SerializedName(value = "i")
-    private String hotelNumber ;
-
-    @SerializedName(value = "ll")
-    private Location longLat;
-
-    class Location {
-        @SerializedName(value = "lat")
-        private String latitude;
-        @SerializedName(value ="lng" )
-        private  String longitude;
+    /**
+     * Constructor
+     * @param id : HotelID
+     * @param name : Name of Hotel
+     * @param address:  Street Address
+     * @param city : City
+     * @param state : State
+     * @param latitude : Geographical latitude
+     * @param longitude : Geographical longitude
+     */
+    public HotelInformation(String id, String name, String address, String city, String state, String latitude, String longitude) {
+        this.id = id;
+        this.name = name;
+        this.address = address;
+        this.city = city;
+        this.state = state;
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
     public String getHotelId() {return id;}
 
@@ -33,11 +38,11 @@ public class HotelInformation {
     public String getAddress() {return address + System.lineSeparator() + ", " + city + ", " + state;}
 
     public String getLatitude() {
-        return longLat.latitude;
+        return latitude;
     }
 
     public String getLongitude() {
-        return longLat.longitude;
+        return longitude;
     }
     /**
      * Get Expedia Link for a given Hotel Id

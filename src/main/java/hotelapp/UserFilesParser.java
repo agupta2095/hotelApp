@@ -3,6 +3,7 @@ package hotelapp;
 import com.google.gson.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import server.DatabaseHandler;
 
 import java.io.FileReader;
 import java.io.IOException;
@@ -10,7 +11,9 @@ import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -43,7 +46,7 @@ public class UserFilesParser {
      * Class to parse each review file and create review objects
      **/
     public class ReviewFileWorker implements  Runnable {
-        private Set<Review> reviewSet;
+        private Set<Map<String, String>> reviewSet;
         private String reviewFilePath;
         private String hotelId = "";
         public ReviewFileWorker(String reviewFilePath) {
@@ -58,6 +61,7 @@ public class UserFilesParser {
                 JsonObject reviewDetailsObj = (JsonObject) jo.get("reviewDetails");
                 JsonObject reviewCollectionObj = (JsonObject) reviewDetailsObj.get("reviewCollection");
                 JsonArray jArr = reviewCollectionObj.getAsJsonArray("review");
+                DatabaseHandler handler = DatabaseHandler.getInstance();
                 for (JsonElement elem : jArr) {
                     JsonObject jsonObj = elem.getAsJsonObject();
                     String hotelId = jsonObj.get("hotelId").getAsString();
@@ -67,12 +71,19 @@ public class UserFilesParser {
                     String title = jsonObj.get("title").getAsString();
                     String userNickname = jsonObj.get("userNickname").getAsString();
                     String date = jsonObj.get("reviewSubmissionTime").getAsString();
-                    Review reviewObj = new Review(hotelId, reviewId, ratingOverall, title,
-                            reviewText, userNickname, date);
-                    reviewSet.add(reviewObj);
+
+                    Map<String, String> propertyMap = new HashMap<>();
+                    propertyMap.put("id", reviewId);
+                    propertyMap.put("hotelId", hotelId);
+                    propertyMap.put("text", reviewText);
+                    propertyMap.put("rating", ratingOverall);
+                    propertyMap.put("title", title);
+                    propertyMap.put("user", userNickname);
+                    propertyMap.put("time", date);
+                    reviewSet.add(propertyMap);
                     this.hotelId = hotelId;
                 }
-                addReviewsToMainMap(reviewSet, hotelId);
+                addReviewsToDB(reviewSet, hotelId);
                 logger.debug("Worker is done processing " + reviewFilePath + "  totalReviews = " + reviewSet.size());
             } catch (IOException except) {
                 System.out.println("Could not read the file:" + except);
@@ -86,8 +97,17 @@ public class UserFilesParser {
      * @param reviewSet : reviews processed by a single thread
      * @param hotelId : Hotel ID of the hotel for which reviews are processed
     */
-    public void addReviewsToMainMap(Set<Review> reviewSet, String hotelId) {
-        appInterface.addReviews(reviewSet, hotelId);
+    public void addReviewsToDB(Set<Map<String, String>> reviewSet, String hotelId) {
+        DatabaseHandler handler = DatabaseHandler.getInstance();
+        for(Map<String, String> propertyMap : reviewSet) {
+            String reviewText = propertyMap.get("text");
+            String ratingOverall = propertyMap.get("rating");
+            String reviewId = propertyMap.get("id");
+            String title = propertyMap.get("title");
+            String userNickname = propertyMap.get("user");
+            String date = propertyMap.get("time");
+            handler.addReview(title, reviewText,date, userNickname, hotelId, ratingOverall, reviewId);
+        }
     }
 
     /**
@@ -144,13 +164,29 @@ public class UserFilesParser {
         if(hotelFilePath.isEmpty()) {
             return;
         }
-        Gson gson = new Gson();
         try (FileReader filereader = new FileReader(hotelFilePath)) {
             JsonParser jsonParser = new JsonParser();
             JsonObject jo = (JsonObject) jsonParser.parse(filereader);
-            HotelInformation [] hotelArr = gson.fromJson(jo.getAsJsonArray("sr"),HotelInformation[].class);
-            for(HotelInformation obj : hotelArr) {
-                appInterface.addHotel(obj);
+            DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
+            JsonArray jArr = jo.getAsJsonArray("sr");
+            for(JsonElement element : jArr) {
+                String city = "", state = "", address = "";
+                JsonObject jsonObj = element.getAsJsonObject();
+                String hotelId = jsonObj.get("id").getAsString();
+                String hotelName = jsonObj.get("f").getAsString();
+                if(jsonObj.get("ci") != null) {
+                    city = jsonObj.get("ci").getAsString();
+                }
+                if(jsonObj.get("pr") != null) {
+                    state = jsonObj.get("pr").getAsString();
+                }
+                if(jsonObj.get("ad") != null) {
+                    address = jsonObj.get("ad").getAsString();
+                }
+                JsonObject longLat = jsonObj.get("ll").getAsJsonObject();
+                String lat = longLat.get("lat").getAsString();
+                String lng = longLat.get("lng").getAsString();
+                databaseHandler.addHotel(hotelName, hotelId, city, state, address, lng, lat);
             }
         } catch (IOException except) {
             System.out.println("Could not read the file:" + except);

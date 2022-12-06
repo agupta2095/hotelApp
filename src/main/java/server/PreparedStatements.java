@@ -30,23 +30,23 @@ public class PreparedStatements {
 
     /** Used to create review table. */
     public static final String CREATE_REVIEW_TABLE =
-                                  "CREATE TABLE reviews (" +
+                                  "CREATE TABLE reviewsTable (" +
                                           "reviewId VARCHAR(32) NOT NULL PRIMARY KEY, " +
                                           "username VARCHAR(32) NOT NULL, " +
                                           "title VARCHAR(64) NOT NULL, " +
                                           "hotelId VARCHAR(64) NOT NULL, " +
                                           "rating INTEGER NOT NULL, " +
                                           "timeStamp VARCHAR(64) NOT NULL, " +
-                                          "text VARCHAR(512) NOT NULL);" ;
+                                          "text VARCHAR(2047) NOT NULL);" ;
 
     /** Used to add review to the reviews table**/
     public static final String ADD_REVIEW_SQL =
-            "INSERT INTO reviews (reviewId, username, title, hotelId, rating, timeStamp, text)" +
+            "INSERT INTO reviewsTable (reviewId, username, title, hotelId, rating, timeStamp, text)" +
                     "VALUES(?, ?, ?, ?, ?, ?, ?);";
 
     /** Used to get review for a user and hotelId from reviews table **/
     public static final String GET_USER_REVIEW_SQL=
-            "SELECT * from reviews WHERE reviews.hotelId = ? AND reviews.username = ?;";
+            "SELECT * from reviewsTable WHERE reviewsTable.hotelId = ? AND reviewsTable.username = ?;";
 
     /** Used to validate unique username **/
     public static final String  UNIQUE_USER_SQL =
@@ -54,27 +54,36 @@ public class PreparedStatements {
 
     /** Used to get all the reviews added for a particular hotel **/
     public static final String GET_REVIEWS_SQL=
-            "SELECT * from reviews WHERE reviews.hotelId = ?;";
+            "SELECT * from reviewsTable WHERE reviewsTable.hotelId = ?;";
 
     /** Used to modify reviews for a particular user and hotel **/
     public static final String MODIFY_REVIEW_SQL=
-            "UPDATE reviews SET title = ?, rating = ?, timeStamp = ?, text = ? " +
-                    "WHERE reviews.username= ? AND reviews.hotelId = ?;";
+            "UPDATE reviewsTable SET title = ?, rating = ?, timeStamp = ?, text = ? " +
+                    "WHERE reviewsTable.username= ? AND reviewsTable.hotelId = ?;";
 
     /** Used to delete review from the database**/
     public static final String DELETE_REVIEW_SQL=
-            "DELETE from reviews WHERE hotelId = ? AND username = ?";
+            "DELETE from reviewsTable WHERE hotelId = ? AND username = ?";
 
     public static final String CREATE_HOTELS_TABLE =
             "CREATE TABLE hotels ("+
              "hotelId INTEGER UNIQUE NOT NULL, "+
-             "hotelName VARCHAR(32) NOT NULL, " +
+             "hotelName VARCHAR(127) NOT NULL, " +
              "city VARCHAR(32) NOT NULL, " +
              "state VARCHAR(32) NOT NULL, " +
              "address VARCHAR(255) NOT NULL, "+
              "longitude VARCHAR(32) NOT NULL, " +
                     "latitude VARCHAR(32) NOT NULL);";
 
+    public static final String ADD_HOTEL_SQL=
+            "INSERT INTO hotels (hotelId, hotelName, city, state, address, longitude, latitude) " +
+                    "VALUES(?, ?, ?, ?, ?, ?, ?);";
+
+    public static final String GET_ALL_HOTELS_SQL =
+      "SELECT * FROM hotels";
+
+    public static final String GET_HOTEL_SQL =
+            "SELECT * FROM hotels WHERE hotelId = ?;";
     public static final String CREATE_EXPEDIA_SQL=
             "CREATE TABLE expediaLinks (" +
             "username VARCHAR(32) NOT NULL, " +

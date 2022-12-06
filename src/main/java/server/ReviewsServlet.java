@@ -18,13 +18,15 @@ import org.json.JSONObject;
 public class ReviewsServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        AppInterface appInterface = (AppInterface) request.getServletContext().getAttribute("interface");
+
+        DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
         String hotelId = request.getParameter("hotelId");
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-        Set<Review> reviews = appInterface.getReviewsForAHotel(hotelId);
+        Set<Review> reviews = databaseHandler.getReview(hotelId);
+
         JSONArray array = new JSONArray();
 
         if(reviews != null) {
