@@ -13,6 +13,10 @@ async function liked(id, name) {
      body: JSON.stringify(param)
     });
   console.log(response);*/
+  var liked = document.getElementById("like");
+  liked.innerHTML = "";
+  liked.innerHTML= "<i class=\"fa fa-heart\" style=\"color:red\"></i> <span class=\"icon\">Favourite Hotel</span>";
+
   console.log("Here in Add Favourite Hotels");
   var xhttp = new XMLHttpRequest();
   xhttp.open("POST", "/favHotels", true);

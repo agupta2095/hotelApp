@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.text.DecimalFormat;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -33,12 +34,8 @@ public class HotelInfoServlet extends HttpServlet {
 
         String hotelId = request.getParameter("hotelId");
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-        AppInterface appInterface = (AppInterface) request.getServletContext().getAttribute("interface");
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
         HotelInformation hotelInfoObj = dbHandler.getHotel(hotelId);
-
-        //double avgRating = appInterface.getAverageRating(hotelId, newReviews);
-        double avgRating = 0.0;
 
         VelocityContext context = new VelocityContext();
         context.put("hotelName", hotelInfoObj.getHotelName());
@@ -50,15 +47,19 @@ public class HotelInfoServlet extends HttpServlet {
         HttpSession httpSession = request.getSession();
         String userName = (String)httpSession.getAttribute("username");
         context.put("userName", userName);
-        context.put("avgRating", decimalFormat.format(avgRating));
-
-
+        boolean isFavAdded = false;
+        Map<String, String> hotels = dbHandler.getFavouriteHotels(userName);
+        if(hotels.containsKey(hotelId)) {
+            isFavAdded = true;
+        }
+        context.put("isFavAdded", isFavAdded);
         Review review = dbHandler.getReviewForAUser(hotelId, userName);
         boolean isAdd = true;
         if(review != null) {
             isAdd = false;
         }
         context.put("displayAdd", isAdd);
+        context.put("lastLogin", dbHandler.getLastLogin(userName));
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 
         Template template = ve.getTemplate("static/hotelInfoNew.html");

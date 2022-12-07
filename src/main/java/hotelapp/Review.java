@@ -21,7 +21,6 @@ public class Review {
     public String getTimeStamp() {return timeStamp;}
     public String getReviewText() {return reviewText;}
     public String getReviewId() {return reviewId;}
-
     public String getRatingOverall() {return ratingOverall;}
     public String getTitle() {return title;}
     public String getUserName() {return  userNickname;}

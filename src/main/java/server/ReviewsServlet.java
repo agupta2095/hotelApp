@@ -13,6 +13,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.util.LinkedHashMap;
 import java.util.Set;
+
+import org.apache.velocity.VelocityContext;
 import org.json.JSONArray;
 import org.json.JSONObject;
 public class ReviewsServlet extends HttpServlet {
@@ -43,7 +45,7 @@ public class ReviewsServlet extends HttpServlet {
                 index++;
             }
         }
-
+        System.out.println(array.length());
         out.println(array);
     }
 }

@@ -14,8 +14,13 @@ public class LogoutServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession httpSession = request.getSession();
+        String lastLogin = (String)httpSession.getAttribute("lastLogin");
+        String userName = (String) httpSession.getAttribute("username");
+        DatabaseHandler handler = DatabaseHandler.getInstance();
+        handler.updateLoginTimeStamp(userName, lastLogin);
+        System.out.println("In Logout, "+ lastLogin + ", "+ userName);
         httpSession.removeAttribute("username");
         httpSession.invalidate();
-        response.sendRedirect("/home");
+        response.sendRedirect("/login");
     }
 }

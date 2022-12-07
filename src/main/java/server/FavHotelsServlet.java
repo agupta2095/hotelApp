@@ -34,9 +34,10 @@ public class FavHotelsServlet extends HttpServlet {
             databaseHandler.clearFavHotels(username);
             return;
         }
-        //System.out.println("Here in Favourite Hotels " + username);
 
         Map<String, String> hotels = databaseHandler.getFavouriteHotels(username);
+
+
         //System.out.println(hotels);
         JSONArray array = new JSONArray();
         if(hotels != null) {
@@ -58,6 +59,7 @@ public class FavHotelsServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String userName = (String)session.getAttribute("username");
+
         System.out.println("Post in Favourite Hotels " + userName);
         if(userName != null) {
             String hotelId = request.getParameter("hotelId");

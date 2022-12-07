@@ -35,6 +35,8 @@ public class SearchHotelServlet extends HttpServlet {
         String userName = (String)httpSession.getAttribute("username");
         Map<String, String> expediaLinks = databaseHandler.getExpediaLinks(userName);
         context.put("expediaLinks", expediaLinks);
+        String lastLogin = databaseHandler.getLastLogin(userName);
+        context.put("lastLogin", lastLogin);
         Template template = ve.getTemplate("static/searchHotelsNew.html");
 
         StringWriter writer = new StringWriter();
@@ -52,18 +54,24 @@ public class SearchHotelServlet extends HttpServlet {
         String keyword = request.getParameter("keyword");
         keyword = StringEscapeUtils.escapeHtml4(keyword);
         System.out.println(keyword);
-        //AppInterface appInterface = (AppInterface) request.getServletContext().getAttribute("interface");
+
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
         List<HotelInformation> searchedHotels = databaseHandler.getHotelsWithKeyWordInName(keyword);
 
         VelocityContext context = new VelocityContext();
         context.put("hotels", searchedHotels);
 
+
         HttpSession httpSession = request.getSession();
         String userName = (String)httpSession.getAttribute("username");
+        String lastLogin = databaseHandler.getLastLogin(userName);
+
+        context.put("lastLogin", lastLogin);
+
         Map<String, String> expediaLinks = databaseHandler.getExpediaLinks(userName);
         context.put("expediaLinks", expediaLinks);
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
+
 
         Template template = ve.getTemplate("static/searchHotelsNew.html");
 

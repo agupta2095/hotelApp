@@ -4,7 +4,7 @@ public class PreparedStatements {
     /** Prepared Statements  */
     /** For creating the users table */
     public static final String CREATE_USER_TABLE =
-            "CREATE TABLE users (" +
+            "CREATE TABLE usersT (" +
                     "userid INTEGER AUTO_INCREMENT PRIMARY KEY, " +
                     "username VARCHAR(32) NOT NULL UNIQUE, " +
                     "password CHAR(64) NOT NULL, " +
@@ -13,19 +13,22 @@ public class PreparedStatements {
 
     /** Used to insert a new user into the database. */
     public static final String REGISTER_SQL =
-            "INSERT INTO users (username, password, usersalt) " +
-                    "VALUES (?, ?, ?);";
+            "INSERT INTO usersT (username, password, usersalt, loginTimeStamp) " +
+                    "VALUES (?, ?, ?, ?);";
 
     public static final String LOGIN_TIMESTAMP_SQL=
-            "UPDATE users SET loginTimeStamp = ? " +
+            "UPDATE usersT SET loginTimeStamp = ? " +
                     "WHERE username = ?;";
+
+    public static final String GET_LAST_LOGIN =
+            "SELECT loginTimeStamp FROM usersT where username = ?;";
     /** Used to retrieve the salt associated with a specific user. */
     public static final String SALT_SQL =
-            "SELECT usersalt FROM users WHERE username = ?";
+            "SELECT usersalt FROM usersT WHERE username = ?";
 
     /** Used to authenticate a user. */
     public static final String AUTH_SQL =
-            "SELECT username FROM users " +
+            "SELECT username FROM usersT " +
                     "WHERE username = ? AND password = ?";
 
     /** Used to create review table. */
@@ -50,7 +53,7 @@ public class PreparedStatements {
 
     /** Used to validate unique username **/
     public static final String  UNIQUE_USER_SQL =
-            "SELECT * from users WHERE username = ?;";
+            "SELECT * from usersT WHERE username = ?;";
 
     /** Used to get all the reviews added for a particular hotel **/
     public static final String GET_REVIEWS_SQL=
@@ -87,7 +90,7 @@ public class PreparedStatements {
     public static final String CREATE_EXPEDIA_SQL=
             "CREATE TABLE expediaLinks (" +
             "username VARCHAR(32) NOT NULL, " +
-            "expediaLink VARCHAR(255) NOT NULL UNIQUE, " +
+            "expediaLink VARCHAR(255) NOT NULL, " +
                     "hotelName VARCHAR(64) NOT NULL);";
 
     public static final String ADD_EXPEDIA_LINK_SQL=
@@ -101,7 +104,7 @@ public class PreparedStatements {
     public static final String CREATE_FAVOURITE_HOTELS_SQL=
             "CREATE TABLE favHotels (" +
                     "username VARCHAR(32) NOT NULL, " +
-                    "hotelId VARCHAR(32) NOT NULL UNIQUE, " +
+                    "hotelId VARCHAR(32) NOT NULL, " +
                     "hotelName VARCHAR(255) NOT NULL);";
 
     public static final String ADD_FAVOURITE_HOTEL_SQL=

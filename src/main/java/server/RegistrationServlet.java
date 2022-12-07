@@ -43,7 +43,7 @@ public class RegistrationServlet extends HttpServlet {
 			context.put("error", error);
 		}
 		HttpSession httpSession = request.getSession();
-		Template template = ve.getTemplate("static/registration.html");
+		Template template = ve.getTemplate("static/registerNew.html");
 		String username = (String)httpSession.getAttribute("username");
 		PrintWriter out = response.getWriter();
 		if (username == null) {
@@ -87,10 +87,11 @@ public class RegistrationServlet extends HttpServlet {
 			response.sendRedirect("/register?error=3");
 			return;
 		}
-
+		String timeStamp = java.time.LocalDateTime.now().toString();
 		dbHandler.registerUser(usernameParam, password);
 		HttpSession httpSession = request.getSession();
 		httpSession.setAttribute("username", usernameParam);
+		httpSession.setAttribute("lastLogin", timeStamp);
 
 		response.getWriter().println("Successfully registered the user " + usernameParam);
 		response.sendRedirect("/search");

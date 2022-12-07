@@ -25,7 +25,7 @@ public class LoginServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 		VelocityContext context = new VelocityContext();
-		Template template = ve.getTemplate("static/login.html");
+		Template template = ve.getTemplate("static/homePage.html");
 		String errorCode = request.getParameter("error");
 		if(errorCode != null) {
 			errorCode = StringEscapeUtils.escapeHtml4(errorCode);
@@ -36,6 +36,7 @@ public class LoginServlet extends HttpServlet {
 			}
 			context.put("error", error);
 		}
+
         HttpSession httpSession = request.getSession();
 		String username = (String)httpSession.getAttribute("username");
 		if (username == null) {
@@ -55,9 +56,11 @@ public class LoginServlet extends HttpServlet {
 
 		DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 		boolean flag = dbHandler.authenticateUser(user, pass);
+		String timeStamp = java.time.LocalDateTime.now().toString();
 		HttpSession session = request.getSession();
 		if (flag) {
 			session.setAttribute("username", user);
+			session.setAttribute("lastLogin", timeStamp);
 			response.sendRedirect("/search?username="+user);
 		}
 		else {

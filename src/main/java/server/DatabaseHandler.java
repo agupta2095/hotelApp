@@ -10,7 +10,12 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Class to handle queries to MYSQL Database
@@ -146,10 +151,12 @@ public class DatabaseHandler {
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             System.out.println("dbConnection successful for Register User");
             try {
+                String timeStamp = "";
                 statement = connection.prepareStatement(PreparedStatements.REGISTER_SQL);
                 statement.setString(1, newuser);
                 statement.setString(2, passhash);
                 statement.setString(3, usersalt);
+                statement.setString(4, timeStamp);
                 statement.executeUpdate();
                 statement.close();
             }
@@ -189,6 +196,43 @@ public class DatabaseHandler {
         return false;
     }
 
+    public void updateLoginTimeStamp(String user, String timeStamp) {
+        PreparedStatement statement;
+        try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+            statement = connection.prepareStatement(PreparedStatements.LOGIN_TIMESTAMP_SQL);
+            statement.setString(1, timeStamp);
+            statement.setString(2, user);
+            statement.executeUpdate();
+            statement.close();
+        }
+        catch(SQLException e) {
+            System.out.println(e);
+        }
+    }
+
+    public String getLastLogin(String userName) {
+        String lastLogin = null;
+        PreparedStatement statement;
+         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
+             statement = connection.prepareStatement(PreparedStatements.GET_LAST_LOGIN);
+            statement.setString(1, userName);
+            ResultSet results = statement.executeQuery();
+            if (results.next()) {
+                lastLogin = results.getString("loginTimeStamp");
+                Pattern p = Pattern.compile("(.*)T(.*)\\.");
+                Matcher m = p.matcher(lastLogin);
+                while(m.find()) {
+                    lastLogin = m.group(1) + " at " + m.group(2);
+                }
+                System.out.println(lastLogin);
+                return lastLogin;
+            }
+        }
+        catch (SQLException e) {
+            System.out.println(e);
+        }
+        return lastLogin;
+    }
     /**
      * Gets the salt for a specific user.
      *
@@ -613,11 +657,11 @@ public class DatabaseHandler {
      */
     public static void main(String[] args) {
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
-        //dbHandler.createTable();
+        dbHandler.createTable();
         dbHandler.createReviewTable();
-        //dbHandler.createExpediaLinksTable();
-        //dbHandler.createFavouriteHotelsTable();
-        //dbHandler.createHotelsTable();
+        dbHandler.createExpediaLinksTable();
+        dbHandler.createFavouriteHotelsTable();
+        dbHandler.createHotelsTable();
     }
 }
 

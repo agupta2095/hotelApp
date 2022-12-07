@@ -38,7 +38,6 @@ public class HotelServer {
         handler.addServlet(SearchHotelServlet.class, "/search");
         handler.addServlet(HotelInfoServlet.class, "/hotelInfo");
         handler.addServlet(AddReviewServlet.class, "/addReview");
-        handler.addServlet(HomeServlet.class, "/home");
         handler.addServlet(ModifyReviewServlet.class, "/modifyReview");
         handler.addServlet(LogoutServlet.class, "/logout");
         handler.addServlet(DeleteReviewServlet.class, "/deleteReview");
