@@ -22,6 +22,13 @@ public class AddReviewServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
+
+        HttpSession session = request.getSession();
+        String userName = (String)session.getAttribute("username");
+        if(userName == null) {
+            response.sendRedirect("/login");
+            return;
+        }
         PrintWriter out = response.getWriter();
 
         String hotelId = request.getParameter("hotelId");

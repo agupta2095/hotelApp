@@ -26,13 +26,17 @@ public class SearchHotelServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
-
+        HttpSession httpSession = request.getSession();
+        String userName = (String)httpSession.getAttribute("username");
+        if(userName ==  null) {
+            response.sendRedirect("/login");
+            return;
+        }
         PrintWriter out = response.getWriter();
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
         VelocityContext context = new VelocityContext();
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-        HttpSession httpSession = request.getSession();
-        String userName = (String)httpSession.getAttribute("username");
+
         Map<String, String> expediaLinks = databaseHandler.getExpediaLinks(userName);
         context.put("expediaLinks", expediaLinks);
         String lastLogin = databaseHandler.getLastLogin(userName);

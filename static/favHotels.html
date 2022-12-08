@@ -24,7 +24,7 @@
         <div class="wrap d-md-flex justify-content-center">
           <div class="p-4 p-md-5">
             <div class="d-flex">
-              <div class="w-500">
+              <div class="w-600">
                 <h2 class="mb-4">Favourite Hotels</h2>
               </div>
 
@@ -32,12 +32,7 @@
             <div class="list-group" id="favHotels">
               <div id="showFavorite"></div>
             </div>
-            <div class="col-md-6">
-              <div class="form-group" style="margin-top:20px; margin-left:4px">
-                <button type="submit" class="btn btn-primary rounded submit px-3" onclick="clearFav()">Clear List</button>
-              </div>
-            </div>
-            <div class="col-md-6">
+            <div class="col-sm-4">
               <form method="get" action='/search'>
                 <input type="hidden" value="${userName}" name="userName">
                 <div class="form-group" style="margin-top:20px; margin-left:4px">
@@ -45,6 +40,13 @@
                 </div>
               </form>
             </div>
+            <div class="col-sm-4"></div>
+            <div class="col-sm-4">
+              <div class="form-group" style="margin-top:20px; margin-left:4px">
+                <button type="submit" class="btn btn-primary rounded submit px-3" onclick="clearFav()">Clear List</button>
+              </div>
+            </div>
+
       </div>
     </div>
   </div>

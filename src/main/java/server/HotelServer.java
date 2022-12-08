@@ -44,6 +44,7 @@ public class HotelServer {
         handler.addServlet(ExpediaLinksServlet.class, "/expediaLinks");
         handler.addServlet(ReviewsServlet.class, "/reviews");
         handler.addServlet(FavHotelsServlet.class, "/favHotels");
+        handler.addServlet(WeatherServlet.class, "/weather");
 
         ResourceHandler resource_handler = new ResourceHandler(); // a handler for serving static pages
         resource_handler.setDirectoriesListed(true);

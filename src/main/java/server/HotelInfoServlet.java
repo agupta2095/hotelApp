@@ -30,6 +30,12 @@ public class HotelInfoServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html");
         response.setStatus(HttpServletResponse.SC_OK);
+        HttpSession httpSession = request.getSession();
+        String userName = (String)httpSession.getAttribute("username");
+        if(userName == null) {
+            response.sendRedirect("/login");
+            return;
+        }
         PrintWriter out = response.getWriter();
 
         String hotelId = request.getParameter("hotelId");
@@ -44,8 +50,7 @@ public class HotelInfoServlet extends HttpServlet {
         context.put("expediaLink", hotelInfoObj.getExpediaLink("https://www.expedia.com/"));
         context.put("latitude", hotelInfoObj.getLatitude());
         context.put("longitude", hotelInfoObj.getLongitude());
-        HttpSession httpSession = request.getSession();
-        String userName = (String)httpSession.getAttribute("username");
+
         context.put("userName", userName);
         boolean isFavAdded = false;
         Map<String, String> hotels = dbHandler.getFavouriteHotels(userName);

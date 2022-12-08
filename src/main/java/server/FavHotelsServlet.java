@@ -32,13 +32,12 @@ public class FavHotelsServlet extends HttpServlet {
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
         if(clear != null) {
             databaseHandler.clearFavHotels(username);
+            response.sendRedirect("/search");
             return;
         }
 
         Map<String, String> hotels = databaseHandler.getFavouriteHotels(username);
 
-
-        //System.out.println(hotels);
         JSONArray array = new JSONArray();
         if(hotels != null) {
             int index = 0;

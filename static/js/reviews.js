@@ -48,7 +48,7 @@
          showMyReviews.innerHTML += "<h6 style =\"color:black\"> Review by  " + reviews[i]["username"] + " on " + reviews[i]["date"] + "</h6>";
          showMyReviews.innerHTML += "<h6>" + reviews[i]["title"] + "<h6>";
          showMyReviews.innerHTML += "<small>" + reviews[i]["text"] + "</small>";
-         showMyReviews.innerHTML += "<hr style=\"height:2px;border-width:0;color:gray;background-color:gray\">";
+         showMyReviews.innerHTML += "<hr style=\"height:2px;border-width:0;color:#568496;background-color:#568496\">";
        }
        pageNumber.innerHTML = paginationPage;
        if (paginationPage == 1) {
@@ -111,9 +111,9 @@
      console.log(oneCnt);*/
 
      avg.innerHTML = "Average Rating: " + avgRating + "/5";
-     bar5.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + fiveCnt +"%\" aria-valuenow=\"" + fiveCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
-     bar4.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + fourCnt +"%\"  aria-valuenow=\"" + fourCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
-     bar3.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + threeCnt +"%\" aria-valuenow=\"" + threeCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
-     bar2.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + twoCnt +"%\" aria-valuenow=\"" + twoCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
-     bar1.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + oneCnt +"%\" aria-valuenow=\"" + oneCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
+     bar5.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + fiveCnt +"%; background-color:#568496\" aria-valuenow=\"" + fiveCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
+     bar4.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + fourCnt +"%; background-color:#568496\"  aria-valuenow=\"" + fourCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
+     bar3.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + threeCnt +"%; background-color:#568496\" aria-valuenow=\"" + threeCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
+     bar2.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + twoCnt +"%; background-color:#568496\" aria-valuenow=\"" + twoCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
+     bar1.innerHTML = "<div class=\"progress-bar\" role=\"progressbar\" style=\"width: " + oneCnt +"%; background-color:#568496\" aria-valuenow=\"" + oneCnt + "\" aria-valuemin=\"0\" aria-valuemax=\"100\"></div>";
   }
