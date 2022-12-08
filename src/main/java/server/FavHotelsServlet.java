@@ -27,7 +27,10 @@ public class FavHotelsServlet extends HttpServlet {
         HttpSession session = request.getSession();
         PrintWriter out = response.getWriter();
         String username = (String) session.getAttribute("username");
-
+        if(username == null) {
+            response.sendRedirect("/login");
+            return;
+        }
         String clear = request.getParameter("clear");
         DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
         if(clear != null) {

@@ -1,5 +1,7 @@
 package server;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.apache.commons.text.StringEscapeUtils;
@@ -15,7 +17,7 @@ import java.net.URL;
 
 public class WeatherServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String lat = request.getParameter("lat");
         lat = StringEscapeUtils.escapeHtml4(lat);
@@ -45,16 +47,21 @@ public class WeatherServlet extends HttpServlet {
             String line;
             while ((line = in.readLine()) != null) {
                 if (line.startsWith("{")) {
-                    System.out.println(line);
                     JsonParser jsonParser = new JsonParser();
                     JsonObject jo = (JsonObject) jsonParser.parse(line);
                     JsonObject currentWeatherObj = (JsonObject) jo.get("current_weather");
                     String temp = currentWeatherObj.get("temperature").getAsString();
                     String windSpeed = currentWeatherObj.get("windspeed").getAsString();
-                    obj.addProperty("temperature)", temp);
+                    obj.addProperty("temperature", temp);
                     obj.addProperty("windSpeed", windSpeed);
                     JsonObject dailyWeather = (JsonObject) jo.get("daily");
-                    obj.addProperty("rain", dailyWeather.get("rain_sum").getAsString());
+                    JsonArray rainArr = dailyWeather.getAsJsonArray("rain_sum");
+                    double sumRain = 0;
+                    for(JsonElement elem : rainArr) {
+                        sumRain += elem.getAsDouble();
+                    }
+                    sumRain /= 7;
+                    obj.addProperty("rain", sumRain);
                 }
             }
         } catch (IOException e) {
@@ -70,7 +77,6 @@ public class WeatherServlet extends HttpServlet {
             }
         }
         PrintWriter writer = response.getWriter();
-        System.out.println(obj);
         writer.println(obj);
     }
     private static String getRequest(String host, String pathResourceQuery) {
