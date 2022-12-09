@@ -2,7 +2,6 @@ package server;
 
 import hotelapp.HotelInformation;
 import hotelapp.Review;
-import hotelapp.AppInterface;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.velocity.Template;
 import org.apache.velocity.VelocityContext;

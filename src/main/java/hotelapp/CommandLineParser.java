@@ -11,7 +11,6 @@ public class CommandLineParser {
     /** set of options allowed in command line* */
     final private Map<String, String> hotelSearchOptions;
 
-
     public CommandLineParser() {
         hotelSearchOptions = new HashMap<>();
         hotelSearchOptions.put("-hotels", "");
@@ -40,14 +39,14 @@ public class CommandLineParser {
         return true;
     }
 
-    public boolean processCmdLineArguments(AppInterface appInterface) {
+    public boolean processCmdLineArguments() {
         String hotelFilePath = getHotelFilePath();
         String reviewsDirPath = getReviewsDirPath();
         String outputFilePath = getOutputFilePath();
         String noOfThreads = getNumberOfThreads();
         int noOfThreadsInt = noOfThreads.isEmpty() ? 1 : Integer.parseInt(noOfThreads);
 
-        UserFilesParser userFilesParser = new UserFilesParser(noOfThreadsInt, appInterface);
+        UserFilesParser userFilesParser = new UserFilesParser(noOfThreadsInt);
         //userFilesParser.parseHotelsFile(hotelFilePath);
         userFilesParser.findAndParseReviewFiles(reviewsDirPath);
         /*appInterface.printInOutputFile(outputFilePath);

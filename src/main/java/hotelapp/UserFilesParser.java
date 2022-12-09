@@ -29,17 +29,14 @@ public class UserFilesParser {
     private final ExecutorService executor;
     private final Logger logger = LogManager.getLogger();
     private final Phaser phaser;
-    private final AppInterface appInterface;
 
     /**
      * Constructor of the class
      * @param nThreads
-     * @param appInterface
      */
-    public UserFilesParser(int nThreads, AppInterface appInterface) {
+    public UserFilesParser(int nThreads) {
         this.executor = Executors.newFixedThreadPool(nThreads);
         this.phaser = new Phaser();
-        this.appInterface = appInterface;
     }
 
     /**

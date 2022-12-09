@@ -11,6 +11,7 @@
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
   <link rel="stylesheet" href="css/style.css">
+  <script src="js/validation.js"></script>
 </head>
 <body>
 <section class="ftco-section">
@@ -40,7 +41,7 @@
                 <input type="password" class="form-control" placeholder="Password" required name="pass">
               </div>
               <div class="form-group">
-                <button type="submit" class="form-control btn rounded submit px-3" style="background-color:#568496; color:white">Sign In</button>
+                <button type="submit" class="form-control btn rounded submit px-3" style="background-color:#568496; color:white" onclick="myValidation($error)">Sign In</button>
               </div>
 
             </form>

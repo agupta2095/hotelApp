@@ -29,19 +29,10 @@ public class RegistrationServlet extends HttpServlet {
 		VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");
 		VelocityContext context = new VelocityContext();
 		String errorCode = request.getParameter("error");
-		if(errorCode != null) {
-			errorCode = StringEscapeUtils.escapeHtml4(errorCode);
-			Enums.ErrorCode error = Enums.ErrorCode.DEFAULT;
-			int errorInt = Integer.parseInt(errorCode);
-			if (errorInt == 1) {
-				error = Enums.ErrorCode.USER_EXISTS;
-			} else if (errorInt == 2) {
-				error = Enums.ErrorCode.PASSWORD_MISMATCH;
-			} else if (errorInt == 3) {
-				error = Enums.ErrorCode.PASSWORD_INSUFFICIENT;
-			}
-			context.put("error", error);
+		if(errorCode == null) {
+			errorCode = "0";
 		}
+		context.put("error", Integer.parseInt(errorCode));
 		HttpSession httpSession = request.getSession();
 		Template template = ve.getTemplate("static/registerNew.html");
 		String username = (String)httpSession.getAttribute("username");
@@ -52,7 +43,7 @@ public class RegistrationServlet extends HttpServlet {
 			out.println(writer);
 		}
 		else  {
-			response.sendRedirect("/search?username="+username);
+			response.sendRedirect("/search");
 		}
 	}
 
@@ -83,7 +74,7 @@ public class RegistrationServlet extends HttpServlet {
 		}
 		Password passObj = new Password();
 		if(!passObj.validatePassword(password)) {
-			response.getWriter().println("Password should be minimum eight characters, at least one letter, one number and one special character:");
+			response.getWriter().println("Password should be minimum six characters, at least one letter, one number and one special character:");
 			response.sendRedirect("/register?error=3");
 			return;
 		}

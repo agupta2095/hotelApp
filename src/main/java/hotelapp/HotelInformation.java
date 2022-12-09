@@ -57,15 +57,4 @@ public class HotelInformation {
         return expediaLink;
     }
 
-    /**
-     * Print Hotel Details for the find application in CLI mode
-     * @return
-     */
-    public String printHotelDetails() {
-        String details =
-                this.name +  ": " + this.id + System.lineSeparator()+
-                        this.address +  System.lineSeparator() +
-                        this.city + ", " + this.state;
-        return details;
-    }
 }

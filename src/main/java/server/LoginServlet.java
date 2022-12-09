@@ -27,15 +27,10 @@ public class LoginServlet extends HttpServlet {
 		VelocityContext context = new VelocityContext();
 		Template template = ve.getTemplate("static/homePage.html");
 		String errorCode = request.getParameter("error");
-		if(errorCode != null) {
-			errorCode = StringEscapeUtils.escapeHtml4(errorCode);
-			Enums.ErrorCode error = Enums.ErrorCode.DEFAULT;
-			int errorInt = Integer.parseInt(errorCode);
-			if (errorInt == 4) {
-				error = Enums.ErrorCode.LOGIN_ERROR;
-			}
-			context.put("error", error);
+		if(errorCode == null) {
+			errorCode = "0";
 		}
+		context.put("error", Integer.parseInt(errorCode));
 
         HttpSession httpSession = request.getSession();
 		String username = (String)httpSession.getAttribute("username");
@@ -45,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 			out.println(writer);
 		}
 		else  {
-			response.sendRedirect("/search?username="+username);
+			response.sendRedirect("/search");
 		}
 	}
 
@@ -61,11 +56,9 @@ public class LoginServlet extends HttpServlet {
 		if (flag) {
 			session.setAttribute("username", user);
 			session.setAttribute("lastLogin", timeStamp);
-			response.sendRedirect("/search?username="+user);
+			response.sendRedirect("/search");
 		}
 		else {
-			PrintWriter out = response.getWriter();
-			out.println("Incorrect Username or Password.");
 			response.sendRedirect("/login?error=4");
 		}
 	}

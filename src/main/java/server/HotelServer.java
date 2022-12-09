@@ -1,7 +1,5 @@
 package server;
 
-import hotelapp.AppInterface;
-import hotelapp.CommandLineParser;
 import org.apache.velocity.app.VelocityEngine;
 import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
@@ -14,15 +12,7 @@ public class HotelServer {
     public static final int PORT = 8083;
 
     public static void main(String[] args) throws Exception {
-        /*CommandLineParser cp = new CommandLineParser();
-        cp.parseCommandLineArguments(args);
 
-        AppInterface appInterface = new AppInterface();
-        if(!cp.processCmdLineArguments(appInterface)) {
-            return;
-        }
-        appInterface.fillAvgRating();*/
-        AppInterface appInterface = new AppInterface();
         Server server = new Server(PORT);
 
         ServletContextHandler handler = new ServletContextHandler(ServletContextHandler.SESSIONS);
@@ -30,7 +20,6 @@ public class HotelServer {
         velocity.init();
 
         handler.setAttribute("templateEngine", velocity);
-        handler.setAttribute("interface", appInterface);
 
 
         handler.addServlet(RegistrationServlet.class, "/register");

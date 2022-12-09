@@ -1,6 +1,5 @@
 package server;
 
-import hotelapp.AppInterface;
 import hotelapp.Review;
 import org.apache.commons.text.StringEscapeUtils;
 
@@ -45,7 +44,7 @@ public class ReviewsServlet extends HttpServlet {
                 index++;
             }
         }
-        System.out.println(array.length());
+
         out.println(array);
     }
 }

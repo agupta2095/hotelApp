@@ -20,10 +20,15 @@ public class DeleteReviewServlet extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
 
         HttpSession session = request.getSession();
+        String userName = (String) session.getAttribute("username");
+        if(userName == null) {
+            response.sendRedirect("/login");
+            return;
+        }
 
         String hotelId = request.getParameter("hotelId");
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-        String userName = (String) session.getAttribute("username");
+
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
 
         dbHandler.deleteReview(userName,hotelId);
