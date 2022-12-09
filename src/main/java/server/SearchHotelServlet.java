@@ -40,6 +40,7 @@ public class SearchHotelServlet extends HttpServlet {
         context.put("expediaLinks", expediaLinks);
         String lastLogin = databaseHandler.getLastLogin(userName);
         context.put("lastLogin", lastLogin);
+        context.put("user", userName);
         Template template = ve.getTemplate("static/searchHotelsNew.html");
 
         StringWriter writer = new StringWriter();
@@ -70,7 +71,7 @@ public class SearchHotelServlet extends HttpServlet {
         String lastLogin = databaseHandler.getLastLogin(userName);
 
         context.put("lastLogin", lastLogin);
-
+        context.put("user", userName);
         Map<String, String> expediaLinks = databaseHandler.getExpediaLinks(userName);
         context.put("expediaLinks", expediaLinks);
         VelocityEngine ve = (VelocityEngine) request.getServletContext().getAttribute("templateEngine");

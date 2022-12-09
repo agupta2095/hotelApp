@@ -41,8 +41,12 @@ public class HotelInfoServlet extends HttpServlet {
         hotelId = StringEscapeUtils.escapeHtml4(hotelId);
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
         HotelInformation hotelInfoObj = dbHandler.getHotel(hotelId);
-
+        if(hotelInfoObj == null) {
+            response.sendRedirect("/search");
+            return;
+        }
         VelocityContext context = new VelocityContext();
+
         context.put("hotelName", hotelInfoObj.getHotelName());
         context.put("hotelId", hotelId);
         context.put("hotelAddress", hotelInfoObj.getAddress());
@@ -50,10 +54,9 @@ public class HotelInfoServlet extends HttpServlet {
         context.put("latitude", hotelInfoObj.getLatitude());
         context.put("longitude", hotelInfoObj.getLongitude());
 
-        context.put("userName", userName);
         boolean isFavAdded = false;
-        Map<String, String> hotels = dbHandler.getFavouriteHotels(userName);
-        if(hotels.containsKey(hotelId)) {
+        Map<String, String> favHotels = dbHandler.getFavouriteHotels(userName);
+        if(favHotels.containsKey(hotelId)) {
             isFavAdded = true;
         }
         context.put("isFavAdded", isFavAdded);

@@ -36,7 +36,7 @@
        var previousPage = document.getElementById("previousPage");
        var showMyReviews = document.getElementById("showReviews");
        var pageNumber = document.getElementById("paginationPage");
-       //validating pages based on page count
+
        if (pageNumber < 1)
        paginationPage = 1;
 
