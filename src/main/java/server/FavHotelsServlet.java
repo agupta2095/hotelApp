@@ -66,10 +66,8 @@ public class FavHotelsServlet extends HttpServlet {
         if(userName != null) {
             String hotelId = request.getParameter("hotelId");
             hotelId = StringEscapeUtils.escapeHtml4(hotelId);
-            String hotelName = request.getParameter("hotelName");
-            hotelName = StringEscapeUtils.escapeHtml4(hotelName);
             DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
-            databaseHandler.addFavouriteHotel(userName, hotelId, hotelName);
+            databaseHandler.addFavouriteHotel(userName, hotelId);
         }
         response.setStatus(HttpServletResponse.SC_OK);
     }

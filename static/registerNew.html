@@ -35,6 +35,9 @@
               <div class="form-group mb-3">
                 <label class="label">Username</label>
                 <input type="text" class="form-control" placeholder="Username" required name="username">
+                #if($error==1)
+                <small>Username already taken!</small>
+                #end
               </div>
               <div class="form-group mb-3">
                 <label class="label">Password</label>
@@ -44,8 +47,15 @@
                 <label class="label">Re-enter Password</label>
                 <input type="password" class="form-control" placeholder="Password" required name="repass">
               </div>
+              #if($error==2)
+              <small>Passwords don't match!</small>
+              #end
+              #if($error==3)
+              <p style="line-height:1; margin:2px; padding:0px"><small>
+              Password must contain at-least one digit, special character, alphabet and minimum 6 characters!</small></p>
+              #end
               <div class="form-group">
-                <button type="submit" class="form-control btn rounded submit px-3"  style="background-color:#568496; color:white" onclick="myValidation($error)">Continue</button>
+                <button type="submit" class="form-control btn rounded submit px-3"  style="background-color:#568496; color:white">Continue</button>
               </div>
 
             </form>

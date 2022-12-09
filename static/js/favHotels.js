@@ -1,18 +1,4 @@
-async function liked(id, name) {
-  /*var param = {"hotelId": id, "hotelName": name}
-  console.log("Here in Add Favourite Hotels");
-  console.log(id);
-  console.log(name);
-  console.log(param);
-  let response = await fetch('/favHotels', {
-     method :'POST',
-     headers: {
-         'Content-Type': 'application/json'
-         "Access-Control-Origin": "*"
-     },
-     body: JSON.stringify(param)
-    });
-  console.log(response);*/
+async function liked(id) {
   var liked = document.getElementById("like");
   liked.innerHTML = "";
   liked.innerHTML= "<i class=\"fa fa-heart\" style=\"color:red\"></i> <span class=\"icon\">Favourite Hotel</span>";
@@ -22,7 +8,7 @@ async function liked(id, name) {
   xhttp.open("POST", "/favHotels", true);
   xhttp.setRequestHeader("Content-type",
   "application/x-www-form-urlencoded");
-  xhttp.send("hotelId="+id+"&hotelName="+name);
+  xhttp.send("hotelId="+id);
 }
 
 var likedHotels

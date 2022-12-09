@@ -41,7 +41,10 @@
                 <input type="password" class="form-control" placeholder="Password" required name="pass">
               </div>
               <div class="form-group">
-                <button type="submit" class="form-control btn rounded submit px-3" style="background-color:#568496; color:white" onclick="myValidation($error)">Sign In</button>
+                <button type="submit" class="form-control btn rounded submit px-3" style="background-color:#568496; color:white">Sign In</button>
+                #if($error == 4)
+                <small>Incorrect Username or Password!</small>
+                #end
               </div>
 
             </form>

@@ -78,7 +78,19 @@
   <a onclick="updateExpedia('${expediaLink}', '${hotelName}');" href ="${expediaLink}">
     <h6 class="my-2 my-sm-0" style="color:black">Go To Expedia Page</h6>
   </a>
-
+    #if($isFavAdded)
+      <br>
+      <i class="fa fa-heart" style="color:red"></i>
+      <span class="icon" width="30px">Favourite Hotel</span>
+    #else
+      <br>
+      <div class id="like">
+    <button class ="favourite" onclick="liked('${hotelId}')">
+      <i class="fa fa-heart-o" style="color:red"></i>
+      <span class="icon">Add To Favourite</span>
+    </button>
+      </div>
+    #end
     </div>
     <div class="col-sm-2" style ="margin-top:5px">
         <img src="https://thumbs.gfycat.com/AlertKeyEnglishpointer-max-1mb.gif" height="240px" width="185px" style="color: #4B515D; border-radius: 10px; position:absolute; border: 2px solid #568496" >
@@ -111,29 +123,7 @@
 
     </div>
 </div>
-#if($isFavAdded)
-<div class="container-fluid" style="margin-top:10px margin-left:30px">
-  <div class="row content justify-content-left">
-    <div class="col-lg-6">
-    <button class ="favourite">
-      <i class="fa fa-heart" style="color:red"></i>
-      <span class="icon">Favourite Hotel</span>
-    </button>
-    </div>
-  </div>
-</div>
-#else
-<div class="container-fluid" style="margin-top:10px margin-left:30px">
-  <div class="row content justify-content-left">
-    <div class="col-lg-6">
-      <button class ="favourite" id="like" onclick="liked('${hotelId}', '${hotelName}')">
-        <i class="fa fa-heart-o" style="color:red"></i>
-        <span class="icon">Add To Favourite</span>
-      </button>
-    </div>
-  </div>
-</div>
-#end
+
 <div class="container-fluid" style="margin-top:10px">
   <div class="row content justify-content-center">
     <div class="col-sm-3 sidenav">

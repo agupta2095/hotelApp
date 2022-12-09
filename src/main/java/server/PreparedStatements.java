@@ -104,16 +104,15 @@ public class PreparedStatements {
     public static final String CREATE_FAVOURITE_HOTELS_SQL=
             "CREATE TABLE favHotels (" +
                     "username VARCHAR(32) NOT NULL, " +
-                    "hotelId VARCHAR(32) NOT NULL, " +
-                    "hotelName VARCHAR(255) NOT NULL);";
+                    "hotelId VARCHAR(32) NOT NULL); ";
 
     public static final String ADD_FAVOURITE_HOTEL_SQL=
-            "INSERT INTO favHotels (username, hotelId, hotelName) VALUES(?, ?, ?);";
+            "INSERT INTO favHotels (username, hotelId) VALUES(?, ?);";
 
     public static final String CLEAR_FAVOURITE_HOTELS_SQL =
             "DELETE FROM favHotels WHERE username = ?";
 
     public static final String GET_FAVOURITE_HOTELS_SQL =
-            "SELECT * from favHotels WHERE username = ?";
+            "SELECT hotelId, hotelName from favHotels NATURAL JOIN hotels WHERE  username = ?";
 
 }

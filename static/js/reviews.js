@@ -25,7 +25,7 @@
      }
 
      function getNextPage() {
-       if(currentPage <numberOfPages()) {
+       if(currentPage <=numberOfPages()) {
          currentPage++;
          displayPage(currentPage);
        }
@@ -39,11 +39,12 @@
        //validating pages based on page count
        if (pageNumber < 1)
        paginationPage = 1;
+
        if (paginationPage > numberOfPages())
        paginationPage = numberOfPages();
 
        showMyReviews.innerHTML = "";
-       for (var i = (paginationPage - 1) * CountPerEachPage; i < (paginationPage * CountPerEachPage); i++) {
+       for (var i = (paginationPage - 1) * CountPerEachPage; i < (paginationPage * CountPerEachPage) && i< reviews.length; i++) {
          showMyReviews.innerHTML +="<h5 style =\"color:black\">" + reviews[i]["rating"] +"/5</h5>";
          showMyReviews.innerHTML += "<h6 style =\"color:black\"> Review by  " + reviews[i]["username"] + " on " + reviews[i]["date"] + "</h6>";
          showMyReviews.innerHTML += "<h6>" + reviews[i]["title"] + "<h6>";

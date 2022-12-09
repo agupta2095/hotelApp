@@ -7,6 +7,6 @@ function myValidation(error) {
   } else if(error == 2) {
      alert("Passwords don't match!");
   } else if(error == 3) {
-     alert("Password must contain atleast one digit, alphabet and special character and minimum 6 characters.")
+     alert("Password must contain at-least one digit, alphabet and special character and minimum 6 characters.")
   }
 }

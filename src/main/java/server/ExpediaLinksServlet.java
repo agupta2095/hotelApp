@@ -41,11 +41,10 @@ public class ExpediaLinksServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         String userName = (String)session.getAttribute("username");
-        PrintWriter out = response.getWriter();
         if(userName != null) {
             DatabaseHandler databaseHandler = DatabaseHandler.getInstance();
             databaseHandler.clearExpediaLinks(userName);
         }
-        response.sendRedirect("/search?username="+userName);
+        response.sendRedirect("/search");
     }
 }

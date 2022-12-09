@@ -454,13 +454,12 @@ public class DatabaseHandler {
         }
         return null;
     }
-    public void addFavouriteHotel(String username, String hotelId, String hotelName) {
+    public void addFavouriteHotel(String username, String hotelId) {
         PreparedStatement statement;
         try (Connection connection = DriverManager.getConnection(uri, config.getProperty("username"), config.getProperty("password"))) {
             statement = connection.prepareStatement(PreparedStatements.ADD_FAVOURITE_HOTEL_SQL);
             statement.setString(1, username);
             statement.setString(2, hotelId);
-            statement.setString(3,hotelName);
             statement.executeUpdate();
             statement.close();
         } catch (SQLException e) {
@@ -657,11 +656,11 @@ public class DatabaseHandler {
      */
     public static void main(String[] args) {
         DatabaseHandler dbHandler = DatabaseHandler.getInstance();
-        dbHandler.createTable();
-        dbHandler.createReviewTable();
+        //dbHandler.createTable();
+        //dbHandler.createReviewTable();
         dbHandler.createExpediaLinksTable();
         dbHandler.createFavouriteHotelsTable();
-        dbHandler.createHotelsTable();
+        //dbHandler.createHotelsTable();
     }
 }
 
