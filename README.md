@@ -9,5 +9,5 @@ Projects Features
 5. The user can search from a list of 6000 hotels from the san francisco bay area.
 6. The user can add a few hotels as their favorite hotels/
 7. ![Alt Text](https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.45%20PM.png?raw=true)
-<img src="https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.58%20PM.png?raw=true" alt="Alt Text" width="400" height="200">
+<img src="https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.58%20PM.png?raw=true" alt="Alt Text" width="400" height="400">
 
