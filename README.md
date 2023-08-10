@@ -7,7 +7,9 @@ Projects Features
 3. Used Bootstrap and CSS, Javascript for the front-end web development
 4. The reviews are sorted by date and timestamp created
 5. The user can search from a list of 6000 hotels from the san francisco bay area.
-6. The user can add a few hotels as their favorite hotels/
-7. ![Alt Text](https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.45%20PM.png?raw=true)
+6. Display the location of the hotel using openstreetmap.org.
+7. Weather is collected using https://api.open-meteo.com" passing longitude and latitude as the parameters.
+8. The user can add a few hotels as their favorite hotels/
+9. ![Alt Text](https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.45%20PM.png?raw=true)
 <img src="https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.58%20PM.png?raw=true" alt="Alt Text" width="400" height="400">
 
