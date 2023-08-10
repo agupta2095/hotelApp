@@ -6,3 +6,4 @@ Projects Features
 2. Added pagination on the client side.
 3. Used Bootsrap and CSS, Javascript for the front-end web development
 4. ![Alt Text](https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.45%20PM.png?raw=true)
+5. ![Alt Text](https://github.com/agupta2095/hotelApp/blob/main/Screen%20Shot%202022-12-12%20at%203.59.58%20PM.png?raw=true)
